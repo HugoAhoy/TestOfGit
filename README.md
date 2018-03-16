@@ -1,2 +1,1 @@
-# TestOfGit
-To test some features of git and GitHub
+# TestOfGitTo test some features of git and GitHubThere's nothing to see, just press `Backspase`
