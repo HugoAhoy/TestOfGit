@@ -1,0 +1,1 @@
+```struct Student{	char name[10];	int id;	double grade;	};Stduent s = {"Bill", 1001, 3.5};printf("%Student",s);        //语法错误```
