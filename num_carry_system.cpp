@@ -21,9 +21,11 @@ numWithCARRY::numWithCARRY(string a, int k):carry(k) {
 
 numWithCARRY change(const numWithCARRY &obj, int toCarry) {
     string temp = obj.num;
+    int m = 0;
     for(int i = 0; i < obj.num.length(); i++) {
-
+        m = m * obj.carry + temp[i];
     }
+    
     return numWithCARRY(temp, toCarry);
 }
 
