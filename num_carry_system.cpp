@@ -1,42 +1,49 @@
+#include<sstream>
 #include<map>
 #include<iostream>
 #include<string>
 using namespace std;
 
-class numWithCARRY{
+class numWithBase{
     private:
     static map<char, int>reflectTbl;
     int carry;
     string num;
     public:
-    numWithCARRY(string a, int k);
-    ~numWithCARRY(){};
+    numWithBase(string a, int k);
+    ~numWithBase(){};
     void show() {
         cout << num << endl;
     }
-    friend numWithCARRY change(const numWithCARRY &obj, int toCarry);
+    friend numWithBase change(const numWithBase &obj);
 };
 
-numWithCARRY::numWithCARRY(string a, int k):carry(k) {
+numWithBase::numWithBase(string a, int k):carry(k) {
     num = a;
 }
 
-numWithCARRY change(const numWithCARRY &obj, int toCarry) {
+numWithBase change(const numWithBase &obj) {
+    stringstream ss;
     string temp = obj.num;
     int m = 0;
     for(int i = 0; i < obj.num.length(); i++) {
-        m = m * obj.carry + temp[i];
+        m = m * obj.carry + (temp[i] - '0');
     }
-    
-    return numWithCARRY(temp, toCarry);
+    ss<< m;
+    ss >> temp;
+    return numWithBase(temp, 10);
+}
+
+map<char, int> initial() {
+
 }
 
 int main() {
     string a;
-    int carry, toCarry;
-    cin >> a >> carry;
-    numWithCARRY num(a, carry);
-    cin >> toCarry;
-    change(num, toCarry).show();
+    int carry;
+    cin >> a;
+    cin >> carry;
+    numWithBase num(a, carry);
+    change(num).show();
     return 0;
 }
