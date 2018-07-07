@@ -1,9 +1,11 @@
+#include<map>
 #include<iostream>
 #include<string>
 using namespace std;
 
 class numWithCARRY{
     private:
+    static map<char, int>reflectTbl;
     int carry;
     string num;
     public:
