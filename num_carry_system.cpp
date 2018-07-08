@@ -2,11 +2,12 @@
 #include<map>
 #include<iostream>
 #include<string>
+#include<fstream>
 using namespace std;
 
 class numWithBase{
     private:
-    static map<char, int>reflectTbl;
+    static map<char, int> keyVal;
     int carry;
     string num;
     public:
@@ -27,7 +28,7 @@ numWithBase change(const numWithBase &obj) {
     string temp = obj.num;
     int m = 0;
     for(int i = 0; i < obj.num.length(); i++) {
-        m = m * obj.carry + (temp[i] - '0');
+        m = m * obj.carry + numWithBase::keyVal.at(temp[i]);
     }
     ss<< m;
     ss >> temp;
@@ -35,9 +36,19 @@ numWithBase change(const numWithBase &obj) {
 }
 
 map<char, int> initial() {
-
+    map<char,int> keyValue;
+    ifstream inFile(".\\keyValFile");
+    int i = 1;
+    char temp;
+    while(!inFile.eof()) {
+        inFile >> temp;
+        keyValue.insert(make_pair(temp,i));
+        i++;
+    }
+    inFile.close();
+    return keyValue;
 }
-
+map<char,int> numWithBase::keyVal(initial());
 int main() {
     string a;
     int carry;
