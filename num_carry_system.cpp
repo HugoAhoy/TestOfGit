@@ -3,6 +3,7 @@
 #include<iostream>
 #include<string>
 #include<fstream>
+#include<algorithm>
 using namespace std;
 
 class numWithBase{
@@ -16,23 +17,31 @@ class numWithBase{
     void show() {
         cout << num << endl;
     }
-    friend numWithBase change(const numWithBase &obj);
+    friend numWithBase change(const numWithBase &obj, int carry);
 };
 
 numWithBase::numWithBase(string a, int k):carry(k) {
     num = a;
 }
 
-numWithBase change(const numWithBase &obj) {
+numWithBase change(const numWithBase &obj, int carry) {
     stringstream ss;
     string temp = obj.num;
     int m = 0;
     for(int i = 0; i < obj.num.length(); i++) {
         m = m * obj.carry + numWithBase::keyVal.at(temp[i]);
     }
-    ss<< m;
+    ss << m;
     ss >> temp;
-    return numWithBase(temp, 10);
+    if(carry != 10) {
+        temp = "";
+        while(m) {
+            temp += (char)(m%carry + '0');
+            m = m/carry;
+        }
+        reverse(temp.begin(),temp.end());
+    }
+    return numWithBase(temp, carry);
 }
 
 map<char, int> initial() {
@@ -51,10 +60,10 @@ map<char, int> initial() {
 map<char,int> numWithBase::keyVal(initial());
 int main() {
     string a;
-    int carry;
+    int carry, tocarry;
     cin >> a;
-    cin >> carry;
+    cin >> carry >> tocarry;
     numWithBase num(a, carry);
-    change(num).show();
+    change(num, tocarry).show();
     return 0;
 }
