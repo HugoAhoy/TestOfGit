@@ -9,6 +9,7 @@ using namespace std;
 class numWithBase{
     private:
     static map<char, int> keyVal;
+    static map<int,char> valKey;
     int carry;
     string num;
     public:
@@ -36,18 +37,18 @@ numWithBase change(const numWithBase &obj, int carry) {
     if(carry != 10) {
         temp = "";
         while(m) {
-            temp += (char)(m%carry + '0');
+            temp += numWithBase::valKey.at(m%carry);
             m = m/carry;
         }
         reverse(temp.begin(),temp.end());
     }
-    return numWithBase(temp, carry);
+    return numWithBase(temp,carry);
 }
 
-map<char, int> initial() {
+map<char, int> initialkeyVal() {
     map<char,int> keyValue;
     ifstream inFile(".\\keyValFile");
-    int i = 1;
+    int i = 0;
     char temp;
     while(!inFile.eof()) {
         inFile >> temp;
@@ -57,7 +58,24 @@ map<char, int> initial() {
     inFile.close();
     return keyValue;
 }
-map<char,int> numWithBase::keyVal(initial());
+
+map<int,char> initialvalKey() {
+    map<int,char> valueKey;
+    ifstream inFile(".\\keyValFile");
+    int i = 0;
+    char temp;
+    while(!inFile.eof()) {
+        inFile >> temp;
+        valueKey.insert(make_pair(i,temp));
+        i++;
+    }
+    inFile.close();
+    return valueKey;
+}
+
+map<char,int> numWithBase::keyVal(initialkeyVal());
+map<int,char> numWithBase::valKey(initialvalKey());
+
 int main() {
     string a;
     int carry, tocarry;
