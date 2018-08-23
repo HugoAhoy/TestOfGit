@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.messagebox import *
 import socket
 class Application(Tk):
     def __init__(self, size = '100x100'):
@@ -15,19 +16,19 @@ class Application(Tk):
         self.PWDLabel.pack()
         self.PWDEntry = Entry(self, show = '*')
         self.PWDEntry.pack()
-        self.LoadButton = Button(self, text='Load', command = send_Loading_msg)
+        self.LoadButton = Button(self, text='Load', command = self.send_Loading_msg)
         self.LoadButton.pack()
 
     def send_Loading_msg(self):
         if (self.PWDEntry.get() == '' or self.AccountEntry.get() == ''):
-            pass
+            showinfo(title="tips", message="Please fill the blank")
         else:
-            content = b'acc:' + self.AccountEntry.get() + 'pwd:' + self.PWDEntry.get()
+            content = 'acc:' + self.AccountEntry.get() + 'pwd:' + self.PWDEntry.get()
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect(('127.0.0.1',6666))
-            s.send(content)
+            s.connect(('192.168.1.102',6666))
+            s.send(content.encode())
 
 
-app = Application('200x150')
-app.title('IM_Client')
+app = Application('239x125')
+app.title('HUGO\'s IM')
 app.mainloop()
