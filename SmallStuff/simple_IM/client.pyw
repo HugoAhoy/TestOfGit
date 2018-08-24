@@ -1,3 +1,4 @@
+import json
 from tkinter import *
 from tkinter.messagebox import *
 import socket
@@ -23,12 +24,19 @@ class Application(Tk):
         if (self.PWDEntry.get() == '' or self.AccountEntry.get() == ''):
             showinfo(title="tips", message="Please fill the blank")
         else:
-            content = 'acc:' + self.AccountEntry.get() + 'pwd:' + self.PWDEntry.get()
+            content = loadApply_generator(self.AccountEntry.get(), self.PWDEntry.get())
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect(('192.168.1.102',6666))
+            s.connect(('10.6.136.183',6666))
             s.send(content.encode())
 
+def loadApply_generator(acc, pwd):
+    msg = [{
+        "acc" : acc,
+        "pwd" : pwd
+    }]
+    return json.dumps(msg)
 
-app = Application('239x125')
-app.title('HUGO\'s IM')
-app.mainloop()
+if __name__ == '__main__':
+    app = Application('239x125')
+    app.title('HUGO\'s IM')
+    app.mainloop()
