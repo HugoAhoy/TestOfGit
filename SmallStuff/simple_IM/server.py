@@ -21,8 +21,9 @@ def tcplink(sock, addr):
         if not data:
             break
         total_data.append(data)
+    print(total_data)
 #process message
-    data_parser(total_data)
+    # data_parser(total_data)
 
 
 
@@ -30,7 +31,7 @@ def tcplink(sock, addr):
 
 if __name__ == '__main__':
     s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    s.bind(('127.0.0.1',9999))
+    s.bind(('127.0.0.1',6666))
     s.listen(12)
     while True:
         sock, addr = s.accept()

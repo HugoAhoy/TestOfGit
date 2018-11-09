@@ -26,7 +26,7 @@ class Application(Tk):
         else:
             content = loadApply_generator(self.AccountEntry.get(), self.PWDEntry.get())
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect(('10.6.136.183',6666))
+            s.connect(('127.0.0.1',6666))
             s.send(content.encode())
 
 def loadApply_generator(acc, pwd):

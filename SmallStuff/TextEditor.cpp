@@ -14,18 +14,21 @@ class BUFFER
     int linenow;
     list<string>::iterator it;
     list<string>::iterator line_now;
-    
 
     public:
+    void PrintLine();
     bool ReadBUFF();
     bool WriteBUFF();
     bool InsertNewline();
     int Find(string sub);
-    bool SubStitude(string sub, string toSub);
+    bool SubStitude();
     bool NextLine();
     bool PreviousLine();
     bool ChangeLine(int line);
     bool View();
+    bool End();
+    bool Begin();
+    bool Delete();
 };
 
 int main()
@@ -51,12 +54,7 @@ int main()
             
             case 'S':
             {
-                string sub, substition;
-                printf("Input the substring you want to find:");
-                cin >> sub;
-                printf("Input the substitution:");
-                cin >> substition;
-                texteditor.SubStitude(sub,substition);
+                texteditor.SubStitude();
             }
             break;
 
@@ -72,10 +70,18 @@ int main()
             break;
             
             case 'V':texteditor.View();break;
+            case 'B':texteditor.Begin();break;
+            case 'E':texteditor.End();break;
+            case 'D':texteditor.Delete();break;
             case 'Q':return 1;
+            case 'p':texteditor.PrintLine();break;
         }
     }
     return 0;
+}
+
+void BUFFER::PrintLine() {
+    cout << linenow << ":" << *line_now << endl;
 }
 
 bool BUFFER::ReadBUFF()
@@ -88,16 +94,20 @@ bool BUFFER::ReadBUFF()
     if(flag == false) {
         return flag;
     }
+    lineNum = 0;
+    linenow = 0;
     text_strs.clear();
     while(inFile.peek() != EOF) {
         getline(inFile,temp);
         text_strs.push_back(temp);
+        lineNum++;
     }
     if(text_strs.empty()) {
         inFile.close();
         return false;
     }
     line_now = text_strs.begin();
+    linenow = 1;
     inFile.close();
     return true;
 }
@@ -137,6 +147,7 @@ bool BUFFER::InsertNewline() {
     }
     text_strs.insert(line_now,newline);
     linenow = n;
+    lineNum++;
     return true;
 }
 
@@ -151,24 +162,28 @@ int BUFFER::Find(string sub) {
     return -1;
 }
 
-bool BUFFER::SubStitude(string sub, string toSub) {
+bool BUFFER::SubStitude() {
     if(text_strs.empty()) {
         return true;
     }
+    string sub, substition;
+    printf("Input the substring you want to find:");
+    cin >> sub;
+    printf("Input the substitution:");
+    cin >> substition;
     it = text_strs.begin();
-    char ch;
-    int len = sub.length(),lentxt;
-    int index;
+    char op;
+    int len = sub.length();
+    string::size_type index;
     printf("Is All-content-valid(Y/N):");
-    scanf("%c",&ch);
-    switch(ch) {
+    cin >> op;
+    switch(op) {
         case 'y':
         case 'Y':
             for(; it != text_strs.end(); it++) {
-                lentxt = it->length();
                 index = 0;
-                while((index = it->find(sub)) != -1) {
-                    it->replace(index,len,toSub);
+                while(index = it->find(sub), index != string::npos) {
+                    it->replace(index,len,substition);
                 }
             }
             //implementation
@@ -176,10 +191,9 @@ bool BUFFER::SubStitude(string sub, string toSub) {
 
         case 'n':
         case 'N':
-            lentxt = it->length();
             index = 0;
-            while((index = it->find(sub)) != -1) {
-                it->replace(index,len,toSub);
+            while(index = it->find(sub), index != string::npos) {
+                it->replace(index,len,substition);
             }
             //implementation
             break;
@@ -207,10 +221,7 @@ bool BUFFER::PreviousLine() {
 
 bool BUFFER::ChangeLine(int line) {
     if(line >= 1 && line <= text_strs.size()) {
-        line_now = text_strs.begin();
-        for(int i = 0; i < line - 1; i++) {
-            line_now ++;
-        }
+        advance(line_now,line-linenow);
         linenow = line;
         return true;
     }
@@ -227,4 +238,26 @@ bool BUFFER::View() {
         }
         return true;
     }
+}
+
+bool BUFFER::Begin() {
+    line_now = text_strs.begin();
+    linenow = 1;
+}
+
+bool BUFFER::End() {
+    line_now = text_strs.end();
+    line_now--;
+    linenow = lineNum;
+    return true;
+}
+
+bool BUFFER::Delete() {
+    if(text_strs.empty()) {
+        return false;
+    }
+    this->PrintLine();
+    line_now = text_strs.erase(line_now);
+    lineNum--;
+    return true;
 }
