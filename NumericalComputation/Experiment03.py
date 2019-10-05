@@ -4,8 +4,8 @@ import math
 ipsl = 1e-20
 
 # 定义迭代初始值,由于有多个根,故有多个初始值
-x_0 = -5
-# x_0 = -1
+# x_0 = -5
+x_0 = -1
 
 # 定义待求函数
 def f(x):
@@ -25,7 +25,8 @@ err = 100
 i = 0
 while err > ipsl:
     i = i + 1
-    x_n = iter_Newton(x_k)
+    # x_n = iter_Newton(x_k)
+    x_n = iter_Newton(x_k, 3)
     err = abs(x_n - x_k)
     print("iteration:", i, "  x:" ,x_n, "  error:", err)
     x_k = x_n
