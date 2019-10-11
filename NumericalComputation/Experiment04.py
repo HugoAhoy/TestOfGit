@@ -25,9 +25,11 @@ for r in range(1,dim):
     for i in range(r, dim):
         sum = reduce(lambda x,y:x+y, [L[r,k]*U[k,i] for k in range(r)])
         U[r,i] = mat[r,i] - sum
-        
+
+    for i in range(r, dim):        
         sum = reduce(lambda x,y:x+y, [L[i,k]*U[k,r] for k in range(r)])
         L[i, r] = (mat[i,r] - sum)/ U[r,r]
+
 # 输出结果
 print("L\n", L)
 print("U\n", U)
